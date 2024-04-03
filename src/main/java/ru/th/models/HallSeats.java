@@ -6,6 +6,8 @@ import org.hibernate.type.SqlTypes;
 
 import javax.persistence.*;
 
+@Getter
+@Setter
 @Entity
 @Table(name = "HallSeats")
 @NoArgsConstructor
@@ -15,29 +17,29 @@ public class HallSeats {
     @Id
     @Column(nullable = false, name = "seat_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public Integer seat_id;
+    private Integer seat_id;
     
     @Column(nullable = false, name = "hall_id")
-    public Integer hall_id;
+    private Integer hall_id;
     
     @Column(nullable = false, name = "seat_group")
-    public Integer seat_group;
+    private Integer seat_group;
     
     @Column(nullable = false, name = "seat_raw")
-    public Integer seat_raw;
+    private Integer seat_raw;
     
     @Column(nullable = false, name = "seat_place")
-    public Integer seat_place;
+    private Integer seat_place;
     
     @Column(nullable = false, name = "seat_type")
     @Enumerated(EnumType.STRING)
     @JdbcTypeCode(SqlTypes.NAMED_ENUM)
-    public EnumHallSeatType seat_type;
+    private EnumHallSeatType seat_type;
     
     @Column(nullable = false, name = "plane_x")
-    public Integer plane_x;
+    private Integer plane_x;
     
     @Column(nullable = false, name = "plane_y")
-    public Integer plane_y;
+    private Integer plane_y;
     
 }

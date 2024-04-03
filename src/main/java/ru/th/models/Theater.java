@@ -3,6 +3,8 @@ package ru.th.models;
 import lombok.*;
 import javax.persistence.*;
 
+@Getter
+@Setter
 @Entity
 @Table(name = "Theater")
 @NoArgsConstructor
@@ -12,15 +14,15 @@ public class Theater {
     @Id
     @Column(nullable = false, name = "theater_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public Integer theater_id;
-    
+    private Integer theater_id;
+
     @Column(nullable = false, name = "name")
-    public String name;
-    
+    private String name;
+
     @Column(name = "address")
-    public String address = "";
-    
+    private String address = "";
+
     @Column(name = "phone_number")
-    public String phone_number = "";
-    
+    private String phone_number = "";
+
 }

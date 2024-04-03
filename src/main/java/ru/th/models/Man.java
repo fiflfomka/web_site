@@ -3,6 +3,8 @@ package ru.th.models;
 import lombok.*;
 import javax.persistence.*;
 
+@Getter
+@Setter
 @Entity
 @Table(name = "Man")
 @NoArgsConstructor
@@ -12,12 +14,12 @@ public class Man {
     @Id
     @Column(name="man_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public Integer man_id;
+    private Integer man_id;
 
     @Column(name = "name")
-    public String name;
+    private String name;
 
     @Column(name = "description")
-    public String description;
+    private String description;
     
 }

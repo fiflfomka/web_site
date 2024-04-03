@@ -5,7 +5,8 @@ import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 import javax.persistence.*;
 
-
+@Getter
+@Setter
 @Entity
 @Table(name = "Play")
 @NoArgsConstructor
@@ -15,23 +16,23 @@ public class Play {
     @Id
     @Column(nullable = false, name = "play_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public Integer play_id;
+    private Integer play_id;
     
     @Column(nullable = false, name = "name")
-    public String name;
+    private String name;
     
     @Column(name = "regisseur")
-    public Integer regisseur;
+    private Integer regisseur;
     
     @Column(name = "release_year")
-    public Integer release_year;
+    private Integer release_year;
 
     @Column(nullable = false, name = "genre")
     @Enumerated(EnumType.STRING)
     @JdbcTypeCode(SqlTypes.NAMED_ENUM)
-    public EnumPlayGenre genre;
+    private EnumPlayGenre genre;
 
     @Column(name = "annotation")
-    public String annotation;
+    private String annotation;
 
 }

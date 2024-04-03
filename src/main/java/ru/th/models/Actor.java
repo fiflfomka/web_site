@@ -3,6 +3,8 @@ package ru.th.models;
 import lombok.*;
 import javax.persistence.*;
 
+@Getter
+@Setter
 @Entity
 @Table(name = "Actor")
 @NoArgsConstructor
@@ -11,12 +13,12 @@ import javax.persistence.*;
 public class Actor {
     @Id
     @Column(name="play_id")
-    public Integer play_id;
+    private Integer play_id;
 
     @Id
     @Column(name="man_id")
-    public Integer man_id;
+    private Integer man_id;
 
     @Column(name="actor_role")
-    public String actor_role;
+    private String actor_role;
 }

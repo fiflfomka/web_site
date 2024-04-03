@@ -1,10 +1,16 @@
 -- полностью или частично уничтожить схему
 
+drop index HallSeats_hall_id;
+drop index Performance_play_id;
+drop index Performance_hall_id;
+drop index Performance_theater_id;
+drop index Performance_start_time;
+drop index Performance_end_time;
+
 drop trigger tickets_update_trigger ON Performance;
 drop trigger get_theater_trigger ON Performance;
 drop function create_tickets;
 drop function get_theater;
-
 
 drop table Passwords;
 drop type profession;

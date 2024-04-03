@@ -39,7 +39,7 @@ CREATE TABLE Actor (
 	man_id integer NOT NULL,
 	actor_role text,
 	CONSTRAINT FK_Actor_man_id FOREIGN KEY (man_id)
-		REFERENCES Man(man_id) ON DELETE CASCADE,
+		REFERENCES Man(man_id) ON DELETE RESTRICT,
 	CONSTRAINT FK_Actor_play_id FOREIGN KEY (play_id)
 		REFERENCES Play(play_id) ON DELETE CASCADE
 );
@@ -94,6 +94,8 @@ CREATE TABLE HallSeats (
 		REFERENCES Halls(hall_id) ON DELETE CASCADE
 );
 
+CREATE INDEX HallSeats_hall_id ON HallSeats(hall_id);
+
 
 -- билеты (на всё той же схеме)
 
@@ -104,7 +106,7 @@ CREATE TABLE Performance (
 	theater_id integer,
 	start_time timestamp NOT NULL,
 	end_time timestamp NOT NULL,
-	places_price_array integer[],
+	places_price_array integer[] NOT NULL,
 	CONSTRAINT FK_Performance_hall_id FOREIGN KEY (hall_id)
 		REFERENCES Halls(hall_id) ON DELETE RESTRICT,
 	CONSTRAINT FK_Performance_theater_id FOREIGN KEY (theater_id)
@@ -112,6 +114,12 @@ CREATE TABLE Performance (
 	CONSTRAINT FK_Performance_play_id FOREIGN KEY (play_id)
 		REFERENCES Play(play_id) ON DELETE RESTRICT
 );
+
+CREATE INDEX Performance_play_id ON Performance(play_id);
+CREATE INDEX Performance_hall_id ON Performance(hall_id);
+CREATE INDEX Performance_theater_id ON Performance(theater_id);
+CREATE INDEX Performance_start_time ON Performance(start_time);
+CREATE INDEX Performance_end_time ON Performance(end_time);
 
 
 CREATE TABLE FreeSeats (
@@ -142,7 +150,7 @@ CREATE FUNCTION cast_profession(varchar) RETURNS profession AS $$
     END;
 $$ LANGUAGE SQL;
 
-CREATE CAST (profession AS character varying) WITH FUNCTION anti_cast_profession(profession) AS IMPLICIT;
+CREATE CAST (varchar AS profession) WITH FUNCTION cast_profession(varchar) AS ASSIGNMENT;
 
 
 CREATE TABLE Passwords (
@@ -154,7 +162,7 @@ CREATE TABLE Passwords (
 		REFERENCES Theater(theater_id) ON DELETE SET NULL
 );
 
-ALTER TABLE Passwords ADD CONSTRAINT PK_Passwords PRIMARY KEY (theater_id, user_role);
+ALTER TABLE Passwords ADD CONSTRAINT PK_Passwords PRIMARY KEY (user_login, user_password);
 
 
 -- действие "добавить выступление" включает в себя также вставку большого количества строк в FreeSeats,
@@ -195,4 +203,3 @@ CREATE TRIGGER get_theater_trigger
 	EXECUTE FUNCTION get_theater();
 
 COMMIT;
-

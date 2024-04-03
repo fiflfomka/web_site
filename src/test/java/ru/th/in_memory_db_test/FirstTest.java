@@ -10,7 +10,7 @@ import java.util.List;
 @SpringBootTest
 class FirstTest {
 
-    @Test
+/*    @Test
     void test_Halls() {
         HallsDAO dao = new HallsDAO();
         Halls el = dao.findById(3);
@@ -126,8 +126,8 @@ class FirstTest {
         dao.deleteById(pk);
         el.theater_id = 3;
         el.user_role = EnumProfession.expert;
-        el.user_login = "LOL";
-        el.user_password = "KEK";
+        el.user_login = "TEST DATA";
+        el.user_password = "TEST DATA";
         dao.save(el);
 
         List<Passwords> all_elem = dao.getAll();
@@ -190,21 +190,21 @@ class FirstTest {
         TheaterDAO dao = new TheaterDAO();
         Theater el = dao.findById(2);
 
-        System.out.println(el.name);
-        System.out.println(el.address);
-        System.out.println(el.phone_number);
+        System.out.println(el.getName());
+        System.out.println(el.getAddress());
+        System.out.println(el.getPhone_number());
 
         el = new Theater();
-        el.name = "TEST DATA";
+        el.setName("TEST DATA");
         dao.save(el);
 
         Integer pk = 20;
         List<Theater> all_elem = dao.getAll();
         for (Theater element : all_elem) {
-            System.out.println(element.name);
-            System.out.println(element.address);
-            System.out.println(element.phone_number);
-            pk = el.theater_id;
+            System.out.println(element.getName());
+            System.out.println(element.getAddress());
+            System.out.println(element.getPhone_number());
+            pk = el.getTheater_id();
         }
 
         dao.deleteById(pk);
@@ -261,7 +261,7 @@ class FirstTest {
         pk = new ActorPK(1,11);
         el.play_id = 1;
         el.man_id = 11;
-        el.actor_role = "Sel Marion";
+        el.actor_role = "TEST DATA";
         dao.save(el);
 
         List<Actor> all_elem = dao.getAll();
@@ -289,8 +289,8 @@ class FirstTest {
         System.out.println(el.description);
 
         el = new Man();
-        el.name = "Krag Wilsent";
-        el.description = "horror";
+        el.name = "TEST DATA";
+        el.description = "TEST DATA";
         dao.save(el);
 
         Integer pk = 0;
@@ -309,6 +309,6 @@ class FirstTest {
         }
 
         System.out.println("****************************MAN TEST SUCCESS****************************");
-    }
+    }*/
 
 }

@@ -5,26 +5,28 @@ import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 import javax.persistence.*;
 
+@Getter
+@Setter
 @Entity
 @Table(name = "Passwords")
 @NoArgsConstructor
 @AllArgsConstructor
 @IdClass(PasswordsPK.class)
 public class Passwords {
-    
-    @Id
-    @Column(nullable = false, name="theater_id")
-    public Integer theater_id;
 
-    @Id
+    @Column(nullable = false, name="theater_id")
+    private Integer theater_id;
+
     @Column(nullable = false, name="user_role")
     @Enumerated(EnumType.STRING)
     @JdbcTypeCode(SqlTypes.NAMED_ENUM)
-    public EnumProfession user_role;
+    private EnumProfession user_role;
 
+    @Id
     @Column(nullable = false, name="user_login")
-    public String user_login;
+    private String user_login;
 
+    @Id
     @Column(nullable = false, name="user_password")
-    public String user_password;
+    private String user_password;
 }
