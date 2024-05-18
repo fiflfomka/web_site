@@ -1,0 +1,24 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <title>Main page</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+
+<div th:with="perf = ${thisPerformance}">
+    <span>[[${perf.getStart_time()}]]</span><br>
+    <span>[[${perf.getEnd_time()}]]</span><br>
+    <div th:each="place : ${allPlaces}">
+        <a th:href="'/payment?PerformanceID=' + ${place.getPerformance_id()} + '&SeatID=' + ${place.getSeat_id()}">Buy!</a>
+        <span>[[${place.getSeat_raw()}]]</span>
+        <span>[[${place.getSeat_place()}]]</span>
+        <span>[[${place.getSeat_type()}]]</span>
+        <br>
+    </div>
+</div>
+
+</body>
+</html>

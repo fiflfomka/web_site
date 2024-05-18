@@ -107,6 +107,8 @@ CREATE TABLE Performance (
 	start_time timestamp NOT NULL,
 	end_time timestamp NOT NULL,
 	places_price_array integer[] NOT NULL,
+    theater_name text,
+    play_name text,
 	CONSTRAINT FK_Performance_hall_id FOREIGN KEY (hall_id)
 		REFERENCES Halls(hall_id) ON DELETE RESTRICT,
 	CONSTRAINT FK_Performance_theater_id FOREIGN KEY (theater_id)
@@ -187,6 +189,8 @@ $$ LANGUAGE plpgsql;
 CREATE FUNCTION get_theater() RETURNS trigger AS $$
 BEGIN
 	NEW.theater_id = (SELECT theater_id FROM Halls WHERE hall_id = NEW.hall_id);
+	NEW.theater_name = (SELECT name FROM Theater WHERE theater_id = NEW.theater_id);
+	NEW.play_name = (SELECT name FROM Play WHERE play_id = NEW.play_id);
 	RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;

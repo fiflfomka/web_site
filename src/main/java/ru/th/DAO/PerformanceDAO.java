@@ -2,11 +2,12 @@ package ru.th.DAO;
 
 import org.hibernate.Transaction;
 import org.jetbrains.annotations.NotNull;
+import ru.th.models.Halls;
 import ru.th.models.Performance;
 import ru.th.models.EnumPlayGenre;
 import org.hibernate.Session;
+import ru.th.models.Play;
 import ru.th.utils.HibernateSessionFactoryUtil;
-import javax.persistence.criteria.CriteriaQuery;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
@@ -35,11 +36,18 @@ public class PerformanceDAO {
 	public List<Performance> getAll() {
 		Session session = HibernateSessionFactoryUtil.getSessionFactory().getCurrentSession();
 		Transaction t = session.beginTransaction();
-		CriteriaQuery<Performance> criteriaQuery = session.getCriteriaBuilder().createQuery(Performance.class);
-		criteriaQuery.from(Performance.class);
-		List<Performance> lst = session.createQuery(criteriaQuery).getResultList();
+		List<Performance> res = session.createQuery("from Performance", Performance.class)
+				.getResultList();
 		t.commit();
-		return lst;
+		return res;
+	}
+
+	public Performance findByID(int id) {
+		Session session = HibernateSessionFactoryUtil.getSessionFactory().getCurrentSession();
+		Transaction t = session.beginTransaction();
+		Performance b = session.get(Performance.class, id);
+		t.commit();
+		return b;
 	}
 
 	public List<Performance> getByTheaterId(Integer theater_id) {
@@ -130,7 +138,8 @@ public class PerformanceDAO {
 			    "SELECT * from Performance WHERE hall_id = :HALL " +
 			    "and (" +
 			    "(:LO between start_time and end_time) or (:HI between start_time and end_time) or " +
-			    "(start_time between :LO and :HI) or (end_time between :LO and :HI)" +
+			    "(start_time between :LO and :HI) or (end_time between :LO and :HI) or " +
+			    "start_time = :LO or end_time = :HI or end_time = :LO or start_time = :HI" +
 			    ")", Performance.class)
 				.setParameter("LO", p.getStart_time())
 				.setParameter("HI", p.getEnd_time())

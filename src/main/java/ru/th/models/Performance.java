@@ -39,4 +39,10 @@ public class Performance {
     @Column(name="places_price_array", columnDefinition = "integer[]")
     @Type(type = "list-array")
     private List<Integer> places_price_array;
+
+    @Column(name = "theater_name")
+    private String theater_name;
+
+    @Column(name = "play_name")
+    private String play_name;
 }

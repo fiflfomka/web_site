@@ -1,4 +1,5 @@
 -- полностью или частично уничтожить схему
+BEGIN TRANSACTION ISOLATION LEVEL SERIALIZABLE;
 
 drop index HallSeats_hall_id;
 drop index Performance_play_id;
@@ -29,3 +30,5 @@ drop table Man;
 drop type play_genre cascade;
 drop type hall_seat_type cascade;
 drop type profession cascade;
+
+COMMIT;
