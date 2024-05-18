@@ -72,28 +72,18 @@ public class PerformanceDAO {
 
     public List<Performance> getByText(@NotNull String pattern) {
 		if (pattern.isEmpty()) {
-			return new ArrayList<>();
+			return getAll();
 		}
+
 		Session session = HibernateSessionFactoryUtil.getSessionFactory().getCurrentSession();
 		Transaction t = session.beginTransaction();
-		List<Performance> res_1 = session.createNativeQuery(
-				"with TMP_1 as (" +
-						"SELECT play_id FROM Play WHERE name LIKE :PATTERN" +
-						") SELECT * FROM Performance NATURAL JOIN TMP_1",
-				Performance.class)
-				    .setParameter("PATTERN", "%" + pattern + "%")
-				    .getResultList();
-		List<Performance> res_2 = session.createNativeQuery(
-				"with TMP_1 as (" +
-						"SELECT theater_id FROM Theater WHERE name LIKE :PATTERN" +
-						") SELECT * FROM Performance NATURAL JOIN TMP_1",
-				Performance.class)
-				    .setParameter("PATTERN", "%" + pattern + "%")
-				    .getResultList();
+		List<Performance> res = session.createQuery("from Performance where " +
+						"theater_name LIKE :PATTERN or play_name LIKE :PATTERN",
+						Performance.class)
+				.setParameter("PATTERN", "%" + pattern + "%")
+				.getResultList();
 		t.commit();
-		res_1.removeAll(res_2);
-		res_1.addAll(res_2);
-        return res_1;
+		return res;
     }
 
     public List<Performance> getWithParameters(EnumPlayGenre play_genre, Timestamp lo, Timestamp hi ) {

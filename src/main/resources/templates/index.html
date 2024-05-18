@@ -1,17 +1,50 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
-    <title>Main page</title>
+    <title>Главная</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <style>
+        .container {
+            width: 50%;
+            border: 1px solid #000000; padding: 8px; margin: 3px auto;
+            color:#000000; line-height:1.5; font-family:serif;
+        }
+    </style>
 </head>
 <body>
 
-<div th:each="perf : ${allPerformances}">
-    <a th:href="'/performance?PerformanceID=' + ${perf.getPerformance_id()}">perf</a>
-    <a th:href="'/theater?TheaterID=' + ${perf.getTheater_id()}"><span>[[${perf.getTheater_name()}]]</span></a>
-    <a th:href="'/play?PlayID=' + ${perf.getPlay_id()}"><span>[[${perf.getPlay_name()}]]</span></a><br>
+<form th:action="@{/find_string}"
+      method="get"
+      class="form-group">
+    <input th:id="'line_find'"
+           name="SubString"
+           placeholder="Введите название пьесы/театра"
+           class="form-control"/>
+    <input th:id="'button_find'"
+           type="submit"
+           value="find!"
+           class ="btn btn-primary"/>
+</form>
+
+<div class="container"
+     th:each="perf : ${allPerformances}"
+     th:id="'container_' + ${perf.getPerformance_id()}">
+
+    <a th:href="'/theater?TheaterID=' + ${perf.getTheater_id()}"
+       th:id="'th_' + ${perf.getTheater_id()}">
+        [[${perf.getTheater_name()}]]
+    </a><br>
+    <a th:href="'/play?PlayID=' + ${perf.getPlay_id()}"
+       th:id="'play_' + ${perf.getPlay_id()}">
+        [[${perf.getPlay_name()}]]
+    </a><br>
+    <a th:href="'/performance?PerformanceID=' + ${perf.getPerformance_id()}"
+       th:id="'perf_' + ${perf.getPerformance_id()}">
+        see or buy tickets
+    </a><br>
+
 </div>
 
 </body>

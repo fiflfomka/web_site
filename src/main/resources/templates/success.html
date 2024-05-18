@@ -1,22 +1,33 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
-    <title>Main page</title>
+    <title th:if="${Success}">
+        успех
+    </title>
+    <title th:if="${!Success}">
+        ошибка
+    </title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 </head>
 <body>
 
-<div th:with="th = ${thisTheater}">
-    <span>[[${th.getName()}]]</span><br>
+<div th:if="${Success}">
+    Успех<br>
+    Билет отправлен на почту<br>
+    <a href="index">на главную</a>
 </div>
 
-<div th:each="perf : ${allPerf}">
-    <a th:href="'/performance?PerformanceID=' + ${perf.getPerformance_id()}">perf</a> /
-    <span>[[${perf.getStart_time()}]]</span> /
-    <span>[[${perf.getEnd_time()}]]</span><br>
+<div th:if="${!Success}">
+    Ошибка<br>
+    Похоже, билет только что был куплен другим пользователем<br>
+    Попробуте купить другой билет
+    <a th:href="'/performance?PerformanceID=' + ${PerformanceID}">
+        На это же выступление
+    </a>
 </div>
+
 
 </body>
 </html>

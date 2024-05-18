@@ -23,6 +23,14 @@ public class ManDAO {
         session.getTransaction().commit();
     }
 
+    public Man findById(Integer id) {
+        Session session = HibernateSessionFactoryUtil.getSessionFactory().getCurrentSession();
+        session.beginTransaction();
+        Man b = session.get(Man.class, id);
+        session.getTransaction().commit();
+        return b;
+    }
+
     public List<Man> findByName(String name){
         Session session = HibernateSessionFactoryUtil.getSessionFactory().getCurrentSession();
         Transaction t = session.beginTransaction();

@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
-    <title>Main page</title>
+    <title>[[${thisPerformance.getPlay_name()}]]</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
@@ -9,13 +9,17 @@
 <body>
 
 <div th:with="perf = ${thisPerformance}">
-    <span>[[${perf.getStart_time()}]]</span><br>
-    <span>[[${perf.getEnd_time()}]]</span><br>
+    [[${perf.getPlay_name()}]]<br>
+    [[${perf.getStart_time()}]]<br>
+    [[${perf.getEnd_time()}]]<br>
     <div th:each="place : ${allPlaces}">
-        <a th:href="'/payment?PerformanceID=' + ${place.getPerformance_id()} + '&SeatID=' + ${place.getSeat_id()}">Buy!</a>
-        <span>[[${place.getSeat_raw()}]]</span>
-        <span>[[${place.getSeat_place()}]]</span>
-        <span>[[${place.getSeat_type()}]]</span>
+        ряд [[${place.getSeat_raw()}]],&emsp;
+        место [[${place.getSeat_place()}]],&emsp;
+        [[${place.getSeat_type()}]],&emsp;
+        [[${place.getPrice()}]] р,&emsp;
+        <a th:href="'/payment?PerformanceID=' + ${place.getPerformance_id()} + '&SeatID=' + ${place.getSeat_id()}">
+            купить место
+        </a>
         <br>
     </div>
 </div>

@@ -9,12 +9,28 @@ import java.util.List;
 
 public class FreeSeatsDAO {
     
-    public void deleteById(FreeSeatsPK id) {
+    public boolean deleteById(FreeSeatsPK id) {
         Session session = HibernateSessionFactoryUtil.getSessionFactory().getCurrentSession();
         session.beginTransaction();
         FreeSeats b = session.get(FreeSeats.class, id);
-        session.delete(b);
+        if (b == null) {
+            return false;
+        }
+        try {
+            session.delete(b);
+        } catch (Exception e) {
+            return false;
+        }
         session.getTransaction().commit();
+        return true;
+    }
+
+    public FreeSeats findById(FreeSeatsPK id) {
+        Session session = HibernateSessionFactoryUtil.getSessionFactory().getCurrentSession();
+        session.beginTransaction();
+        FreeSeats b = session.get(FreeSeats.class, id);
+        session.getTransaction().commit();
+        return b;
     }
 
     public List<FreeSeats> findByPerformance(Integer performance_id){

@@ -13,22 +13,20 @@ drop trigger get_theater_trigger ON Performance;
 drop function create_tickets;
 drop function get_theater;
 
-drop table Passwords;
-drop type profession;
+drop table Passwords cascade;
+drop type profession cascade;
 
 drop table FreeSeats;
 drop table Performance;
 drop table HallSeats;
 drop table Halls;
 drop table Theater;
-drop type hall_seat_type;
+drop type hall_seat_type cascade;
 
 drop table Actor;
 drop table Play;
 drop table Man;
 
 drop type play_genre cascade;
-drop type hall_seat_type cascade;
-drop type profession cascade;
 
 COMMIT;

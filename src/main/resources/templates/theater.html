@@ -1,21 +1,34 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
-    <title>Main page</title>
+    <title>[[${thisTheater.getName()}]]</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <style>
+        .container {
+            width: 50%;
+            border: 1px solid #000000; padding: 8px; margin: 3px auto;
+            color:#000000; line-height:1.5; font-family:serif;
+        }
+    </style>
 </head>
 <body>
 
 <div th:with="th = ${thisTheater}">
-    <span>[[${th.getName()}]]</span><br>
+    [[${th.getName()}]]<br>
+    [[${th.getAddress()}]]<br>
+    <br>Список ближайших выступлений:<br><br>
 </div>
 
-<div th:each="perf : ${allPerf}">
-    <a th:href="'/performance?PerformanceID=' + ${perf.getPerformance_id()}">perf</a> /
-    <span>[[${perf.getStart_time()}]]</span> /
-    <span>[[${perf.getEnd_time()}]]</span><br>
+<div th:each="perf : ${allPerf}"
+     class="container">
+
+    <a th:href="'/performance?PerformanceID=' + ${perf.getPerformance_id()}">
+        [[${perf.getPlay_name()}]]
+    </a><br>
+    [[${perf.getStart_time()}]]<br>
+    [[${perf.getEnd_time()}]]
 </div>
 
 </body>
