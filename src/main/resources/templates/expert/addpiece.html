@@ -1,0 +1,57 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <title>Пьеса</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <style>
+        .container {
+            width: 50%;
+            border: 1px solid #000000; padding: 8px; margin: 3px auto;
+            color:#000000; line-height:1.5; font-family:serif;
+        }
+    </style>
+</head>
+<body>
+
+<fieldset id="group">
+<form th:action="@{/expert/success}"
+      method="post"
+      class="form-group">
+    <input name="Name"
+           placeholder="Введите название пьесы"
+           class="form-control"
+           th:id="name"
+           th:value="${Name}"/>
+    <input name="Annotation"
+           placeholder="Введите аннотацию"
+           class="form-control"
+           th:id="annotation"
+           th:value="${Annotation}"/>
+    <input name="Year"
+           placeholder="Введите год издания пьесы (или оставье пустым)"
+           class="form-control"
+           th:id="year"
+           th:value="${Year}"/>
+    <input type="hidden"
+           name="Regisseur"
+           th:value="${Regisseur}"
+           class="form-control"/>
+
+
+    <input type="radio" value="tragedy" name="group">Трагедия<br>
+    <input type="radio" value="comedy" name="group" checked>Комедия<br>
+    <input type="radio" value="drama" name="group">Драма<br>
+
+
+
+    <input type="submit"
+           value="Добавить"
+           th:id="submit_it"
+           class ="btn btn-primary"/>
+</form>
+</fieldset>
+
+</body>
+</html>

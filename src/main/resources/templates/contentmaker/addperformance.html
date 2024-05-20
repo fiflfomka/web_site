@@ -1,0 +1,40 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <title>Создать</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+
+<form th:action="@{/contentmaker/success}"
+      method="post"
+      class="form-group">
+    Введите время начала
+    <input name="Start"
+           placeholder="2000-01-01 00:00:01"
+           class="form-control"
+           th:id="start_time"/>
+    Введите время конца
+    <input name="End"
+           placeholder="2000-01-01 00:00:01"
+           class="form-control"
+           th:id="end_time"/>
+
+    <input type="hidden"
+           name="Hall"
+           th:value="${Hall}"
+           class="form-control"/>
+    <input th:each="play : ${AllPlay}"
+           name="Play"
+           type="submit"
+           th:value="${play.getPlay_id()}"
+           th:text="${play.getName()}"
+           th:id="'submit_' + ${play.getPlay_id()}"
+           class ="btn btn-primary"/>
+
+</form>
+
+</body>
+</html>

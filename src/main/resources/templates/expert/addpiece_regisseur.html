@@ -1,0 +1,22 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <title>Пьеса</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+
+<a href="/expert/addpiece?Regisseur=null">
+    Режиссёр неизвестен<br>
+</a>
+
+<div th:each="man : ${AllMan}">
+    <a th:href="'/expert/addpiece?Regisseur=' + ${man.getMan_id()}">
+        [[${man.getName()}]]<br>
+    </a>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,65 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <title th:if="${Success}">
+        успех
+    </title>
+    <title th:if="${!Success}">
+        ошибка
+    </title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <style>
+        .container {
+            width: 50%;
+            border: 1px solid #000000; padding: 8px; margin: 3px auto;
+            color:#000000; line-height:1.5; font-family:serif;
+        }
+    </style>
+</head>
+<body>
+
+<div th:if="${Success}">
+    Успех<br>
+    Пьеса добавлена
+    <a href="/expert/">
+        Выход
+    </a>
+    Также можно добавить актеров:
+    <form th:action="@{/expert/success2}"
+          method="post"
+          class="form-group">
+        <input type="hidden"
+               name="PieceId"
+               th:value="${PieceId}">
+        <div th:each="man : ${AllMan}" class="container">
+            <input type="checkbox"
+                   name="answerList"
+                   th:value="${man.getMan_id()}"
+                   th:id="'checkbox_' + ${man.getMan_id()}">
+            <input type="hidden"
+                   name="manId"
+                   th:value="${man.getMan_id()}">
+            [[${man.getName()}]]<br>
+            [[${man.getDescription()}]]<br>
+        </div>
+        <button type="submit"
+                th:id="submit_it"
+                class="btn btn-primary">
+            Добавить актёров
+        </button>
+    </form>
+</div>
+
+<div th:if="${!Success}">
+    Ошибка<br>
+    Данная пьеса не может быть добавлена. Проверьте поля ещё раз<br>
+    <a th:href="'/expert/addpiece?Regisseur=' + ${Regisseur}">
+        Попробовать снова
+    </a>
+</div>
+
+
+</body>
+</html>

@@ -3,6 +3,7 @@ package ru.th.DAO;
 import org.hibernate.Transaction;
 import ru.th.models.Man;
 import org.hibernate.Session;
+import ru.th.models.Performance;
 import ru.th.utils.HibernateSessionFactoryUtil;
 import java.util.List;
 
@@ -21,6 +22,15 @@ public class ManDAO {
         Man b = session.get(Man.class, id);
         session.delete(b);
         session.getTransaction().commit();
+    }
+
+    public List<Man> getAll() {
+        Session session = HibernateSessionFactoryUtil.getSessionFactory().getCurrentSession();
+        Transaction t = session.beginTransaction();
+        List<Man> res = session.createQuery("from Man", Man.class)
+                .getResultList();
+        t.commit();
+        return res;
     }
 
     public Man findById(Integer id) {
