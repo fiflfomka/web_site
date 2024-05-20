@@ -39,7 +39,7 @@ CREATE TABLE Actor (
 	man_id integer NOT NULL,
 	actor_role text,
 	CONSTRAINT FK_Actor_man_id FOREIGN KEY (man_id)
-		REFERENCES Man(man_id) ON DELETE RESTRICT,
+		REFERENCES Man(man_id) ON DELETE CASCADE,
 	CONSTRAINT FK_Actor_play_id FOREIGN KEY (play_id)
 		REFERENCES Play(play_id) ON DELETE CASCADE
 );

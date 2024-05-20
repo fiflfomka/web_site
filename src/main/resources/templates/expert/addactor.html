@@ -1,0 +1,53 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <title>Актеры</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <style>
+        .container {
+            width: 50%;
+            border: 1px solid #000000; padding: 8px; margin: 3px auto;
+            color:#000000; line-height:1.5; font-family:serif;
+        }
+    </style>
+</head>
+<body>
+
+<h3 th:if="${Name != null}">
+    <div th:if="${Add != null}"
+         th:id="answer_1">
+        [[${Name}]] добавлен успешно.<br>
+    </div>
+    <div th:if="${AddFailed != null}"
+         th:id="answer_2">
+        Человек не был добавлен: не указано имя <br>
+    </div>
+</h3>
+
+<a href="/expert/addnew">
+    Добавить нового актера/режиссера<br>
+</a>
+
+<h3 th:if="${Name != null}">
+    <div th:if="${Del != null}"
+         th:id="answer_3">
+        [[${Name}]] удалён успешно.<br>
+    </div>
+    <div th:if="${Edit != null}"
+         th:id="answer_4">
+        [[${Name}]] отредактирован успешно.<br>
+    </div>
+</h3>
+
+Удалить (редактировать) актёров и режиссёров
+<div th:each="man : ${AllMan}" class="container">
+    [[${man.getName()}]] id= [[${man.getMan_id()}]]<br>
+    [[${man.getDescription()}]]<br>
+    <a th:href="'/expert/edit?ManId=' + ${man.getMan_id()}">Редактировать [[${man.getName()}]]</a><br>
+    <a th:href="'/expert/delete?ManId=' + ${man.getMan_id()}">Удалить из базы данных [[${man.getName()}]]</a>
+</div>
+
+</body>
+</html>

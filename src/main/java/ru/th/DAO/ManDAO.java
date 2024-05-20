@@ -1,9 +1,9 @@
 package ru.th.DAO;
 
 import org.hibernate.Transaction;
+import ru.th.models.Halls;
 import ru.th.models.Man;
 import org.hibernate.Session;
-import ru.th.models.Performance;
 import ru.th.utils.HibernateSessionFactoryUtil;
 import java.util.List;
 

@@ -12,7 +12,7 @@ public class ActorDAO {
         Session session = HibernateSessionFactoryUtil.getSessionFactory().getCurrentSession();
         session.beginTransaction();
         for (Actor elem : lst) {
-            session.persist(elem);
+            session.saveOrUpdate(elem);
         }
         session.getTransaction().commit();
     }

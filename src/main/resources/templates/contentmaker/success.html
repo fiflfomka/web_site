@@ -1,17 +1,15 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
-    <title>успех</title>
+    <title th:if="${OK}">
+        успех
+    </title>
+    <title th:if="${!OK}">
+        ошибка
+    </title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <style>
-        .container {
-            width: 50%;
-            border: 1px solid #000000; padding: 8px; margin: 3px auto;
-            color:#000000; line-height:1.5; font-family:serif;
-        }
-    </style>
 </head>
 <body>
 
@@ -20,7 +18,10 @@
 </div>
 
 <div th:if="${!OK}">
-    Представление не может быть добавлено. Проверьте, что время начала и время конца заданы корректно
+    Представление не может быть добавлено. Проверьте, что время начала и время конца заданы корректно<br>
+    <div th:if="${TIMEC != null}">
+        Вероятно, оно пересекается по времени с другим представлением выбранного холла<br>
+    </div>
 </div>
 
 <a href="/contentmaker/">

@@ -5,6 +5,9 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import ru.th.DAO.FreeSeatsDAO;
+import ru.th.models.FreeSeats;
+
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -18,14 +21,16 @@ public class SeleniumTests {
         driver.get("http://localhost:8080");
         assertEquals("Главная", driver.getTitle());
 
-        WebElement line = driver.findElement(By.id("line_find"));
-        line.sendKeys("сад");
-        WebElement btn = driver.findElement(By.id("button_find"));
-        btn.click();
-
+        driver.findElement(By.id("line_find")).sendKeys("сад");
+        driver.findElement(By.id("submit_1")).click();
+        assertEquals("Главная", driver.getTitle());
         List<WebElement> lst = driver.findElements(By.tagName("div"));
-        //System.out.println(lst.size());
-        assertEquals(4, lst.size());
+        assertEquals(16, lst.size());
+
+        driver.findElement(By.id("drama")).click();
+        driver.findElement(By.id("submit_2")).click();
+        lst = driver.findElements(By.tagName("div"));
+        assertEquals(18, lst.size());
 
         driver.quit();
     }
@@ -82,6 +87,7 @@ public class SeleniumTests {
         assertEquals("ошибка", driver_looser.getTitle());
 
         driver.quit();
+        driver_looser.quit();
     }
 
     /* Войти экспертом и создать пьесу */
@@ -124,6 +130,7 @@ public class SeleniumTests {
 
 
 
+
         /* Создать выступление по новой пьесе */
 
         driver.quit();
@@ -155,6 +162,7 @@ public class SeleniumTests {
 
 
 
+
         /* И проверить, что представление создалось */
 
         driver.get("http://localhost:8080");
@@ -162,14 +170,97 @@ public class SeleniumTests {
 
         WebElement line = driver.findElement(By.id("line_find"));
         line.sendKeys("smth");
-        WebElement btn = driver.findElement(By.id("button_find"));
+        WebElement btn = driver.findElement(By.id("submit_1"));
         btn.click();
 
+        assertEquals("Главная", driver.getTitle());
         List<WebElement> lst = driver.findElements(By.tagName("div"));
-        assertEquals(1, lst.size());
+        assertEquals(2, lst.size());
+
+        driver.quit();
+    }
+
+    /* Добавим актера, отпедактируем и удалим */
+    @Test
+    public void actors() {
+        WebDriver driver = new ChromeDriver();
+        driver.get("http://localhost:8080/expert/");
+        assertEquals("Please sign in", driver.getTitle());
+
+        WebElement cont = driver.findElement(By.id("username"));
+        cont.sendKeys("expert");
+        cont = driver.findElement(By.id("password"));
+        cont.sendKeys("expert");
+
+        driver.findElement(By.cssSelector("button")).click();
+        assertEquals("Действие", driver.getTitle());
+
+        driver.findElement(By.linkText("редактировать актерский состав")).click();
+        assertEquals("Актеры", driver.getTitle());
+
+        driver.findElement(By.linkText("Добавить нового актера/режиссера")).click();
+        assertEquals("Добавить", driver.getTitle());
+
+        driver.findElement(By.id("name")).sendKeys("NAME_N");
+        driver.findElement(By.id("submit_it")).click();
+        assertEquals("Актеры", driver.getTitle());
+
+        driver.findElement(By.linkText("Редактировать NAME_N")).click();
+        assertEquals("Редактировать", driver.getTitle());
+
+        driver.findElement(By.id("name")).sendKeys("M");
+        driver.findElement(By.id("submit_it")).click();
+        assertEquals("Актеры", driver.getTitle());
+
+        driver.findElement(By.linkText("Удалить из базы данных NAME_NM")).click();
+        assertEquals("Актеры", driver.getTitle());
+        driver.findElement(By.id("answer_3"));
+
+        driver.findElement(By.linkText("Удалить из базы данных Абрамов Абрам Абрамович")).click();
+        assertEquals("Актеры", driver.getTitle());
+        driver.findElement(By.id("answer_3"));
+
+        driver.findElement(By.linkText("Удалить из базы данных Горький Максим")).click();
+        assertEquals("Актеры", driver.getTitle());
+        driver.findElement(By.id("answer_3"));
+
+        driver.quit();
+    }
+
+    /* Массово заказать битеты */
+    @Test
+    public void tickets() {
+        WebDriver driver = new ChromeDriver();
+        driver.get("http://localhost:8080/cashier/");
+        assertEquals("Please sign in", driver.getTitle());
+
+        WebElement cont = driver.findElement(By.id("username"));
+        cont.sendKeys("cashier");
+        cont = driver.findElement(By.id("password"));
+        cont.sendKeys("cashier");
+
+        driver.findElement(By.cssSelector("button")).click();
+        assertEquals("Представление", driver.getTitle());
+
+        FreeSeatsDAO dao = new FreeSeatsDAO();
+        List<FreeSeats> old = dao.findByPerformance(2);
+
+        driver.findElement(By.id("perf_2")).click();
+        assertEquals("Билеты", driver.getTitle());
+
+        driver.findElement(By.id("checkbox_34")).click();
+        driver.findElement(By.id("checkbox_35")).click();
+        driver.findElement(By.id("checkbox_36")).click();
+
+        driver.findElement(By.id("submit_it")).click();
+        assertEquals("Представление", driver.getTitle());
+        driver.findElement(By.id("answer_1"));
+
+        List<FreeSeats> new_one = dao.findByPerformance(2);
+        assertEquals(3, old.size() - new_one.size());
 
         driver.quit();
     }
 
 
-}
+    }

@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
-    <title>[[${thisPlay.getName()}]]</title>
+    <title>Пьесы</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
@@ -15,20 +15,17 @@
 </head>
 <body>
 
-<div th:with="play = ${thisPlay}">
-    Пьеса [[${play.getName()}]]<br>
-    Жанр: [[${play.getGenre()}]]<br>
-    [[${play.getRelease_year()}]]<br><br>
-    [[${play.getAnnotation()}]]<br><br>
-</div>
-
-<div th:each="perf : ${allPerf}"
+<div th:each="play : ${AllPlay}"
      class="container">
-    [[${perf.getStart_time()}]]<br>
-    [[${perf.getEnd_time()}]]
-    <a th:href="'/performance?PerformanceID=' + ${perf.getPerformance_id()}">
-        Купить билет!
-    </a><br>
+
+    <a th:href="'/play?PlayID=' + ${play.getPlay_id()}">
+        [[${play.getName()}]]<br>
+    </a>
+    В ролях:
+    <div th:each="actor : ${actorDao.findByPlay(play.getPlay_id())}">
+        -[[${manDao.findById(actor.getMan_id()).getName()}]]<br>
+    </div>
+
 </div>
 
 </body>

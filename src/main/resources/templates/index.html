@@ -15,6 +15,18 @@
 </head>
 <body>
 
+<a href="/expert/">
+    войти как эксперт <br>
+</a>
+<a href="/contentmaker/">
+    войти как создающий представления <br>
+</a>
+<a href="/cashier/">
+    войти как бронер билетов <br>
+</a>
+
+<br><br>
+
 <form th:action="@{/find_string}"
       method="get"
       class="form-group">
@@ -22,11 +34,58 @@
            name="SubString"
            placeholder="Введите название пьесы/театра"
            class="form-control"/>
-    <input th:id="'button_find'"
+    <input th:id="submit_1"
            type="submit"
-           value="find!"
+           value="найти по строке"
            class ="btn btn-primary"/>
 </form>
+
+<br>
+
+
+<div th:if="${TIMEC != null}">
+    Время задано некорректно.
+</div>
+
+<fieldset id="Enum">
+<form th:action="@{/find_parameter}"
+      method="get"
+      class="form-group">
+
+    <input name="Start"
+           placeholder="1970-01-01 00:00:00"
+           class="form-control"
+           th:id="start_time"/>
+
+    <input name="End"
+           placeholder="1970-01-01 00:00:00"
+           class="form-control"
+           th:id="end_time"/>
+
+    <input type="radio"
+           value="tragedy"
+           name="Enum"
+           id="tragedy"> Трагедия<br>
+    <input type="radio"
+           value="comedy"
+           name="Enum"
+           id="comedy"> Комедия<br>
+    <input type="radio"
+           value="drama"
+           name="Enum"
+           id="drama">Драма<br>
+    <input type="radio"
+           value="no"
+           name="Enum"
+           id="no_genre"
+           checked>не важен<br>
+
+    <input th:id="'submit_2'"
+           type="submit"
+           value="найти по параметрам"
+           class ="btn btn-primary"/>
+</form>
+</fieldset>
 
 <div class="container"
      th:each="perf : ${allPerformances}"
@@ -44,13 +103,15 @@
        th:id="'perf_' + ${perf.getPerformance_id()}">
         see or buy tickets
     </a><br>
+    Начало [[${perf.getStart_time()}]]<br>
+    Конец [[${perf.getEnd_time()}]]<br>
+    В ролях:<br>
+    <div th:each="actor : ${actorDao.findByPlay(perf.getPlay_id())}">
+        -[[${manDao.findById(actor.getMan_id()).getName()}]]<br>
+    </div>
+    Свободных мест: [[${freeSeatsDao.findByPerformance(perf.getPerformance_id()).size()}]]
 
 </div>
-
-<a href="/expert/choseaction"
-    th:id="'getrole'">
-    войти как эксперт <br>
-</a>
 
 
 </body>

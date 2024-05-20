@@ -1,0 +1,35 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <title>Добавить</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+
+Добавить человека<br><br>
+
+<form th:action="@{/expert/add_man_handler}"
+      method="post"
+      class="form-group">
+
+    <input name="Name"
+           placeholder="Введите имя"
+           class="form-control"
+           th:id="name"/>
+
+    <input name="Description"
+           placeholder="Введите описание (например, биографию)"
+           class="form-control"
+           th:id="description"/>
+
+    <input type="submit"
+           value="Добавить"
+           th:id="submit_it"
+           class ="btn btn-primary"/>
+</form>
+
+
+</body>
+</html>

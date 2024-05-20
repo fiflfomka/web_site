@@ -14,12 +14,34 @@ public class FreeSeatsDAO {
         session.beginTransaction();
         FreeSeats b = session.get(FreeSeats.class, id);
         if (b == null) {
+            session.getTransaction().rollback();
             return false;
         }
         try {
             session.delete(b);
         } catch (Exception e) {
+            session.getTransaction().rollback();
             return false;
+        }
+        session.getTransaction().commit();
+        return true;
+    }
+
+    public boolean deleteMass(List<FreeSeatsPK> lst) {
+        Session session = HibernateSessionFactoryUtil.getSessionFactory().getCurrentSession();
+        session.beginTransaction();
+        for (FreeSeatsPK id : lst) {
+            FreeSeats b = session.get(FreeSeats.class, id);
+            if (b == null) {
+                session.getTransaction().rollback();
+                return false;
+            }
+            try {
+                session.delete(b);
+            } catch (Exception e) {
+                session.getTransaction().rollback();
+                return false;
+            }
         }
         session.getTransaction().commit();
         return true;

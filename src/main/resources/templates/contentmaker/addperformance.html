@@ -26,13 +26,13 @@
            name="Hall"
            th:value="${Hall}"
            class="form-control"/>
-    <input th:each="play : ${AllPlay}"
-           name="Play"
-           type="submit"
-           th:value="${play.getPlay_id()}"
-           th:text="${play.getName()}"
-           th:id="'submit_' + ${play.getPlay_id()}"
-           class ="btn btn-primary"/>
+    <div th:each="play : ${AllPlay}">
+        <button name="Play"
+               type="submit"
+               th:value="${play.getPlay_id()}"
+               th:id="'submit_' + ${play.getPlay_id()}"
+                class ="btn btn-primary">[[${play.getName()}]]</button><br>
+    </div>
 
 </form>
 

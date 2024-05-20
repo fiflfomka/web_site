@@ -86,7 +86,7 @@ public class PerformanceDAO {
 		return res;
     }
 
-    public List<Performance> getWithParameters(EnumPlayGenre play_genre, Timestamp lo, Timestamp hi ) {
+    public List<Performance> getWithParameters(EnumPlayGenre play_genre, Timestamp lo, Timestamp hi) {
 		Session session = HibernateSessionFactoryUtil.getSessionFactory().getCurrentSession();
         Transaction t = session.beginTransaction();
 		String query = "select * from Performance where start_time between :LO and :HI";

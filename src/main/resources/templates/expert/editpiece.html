@@ -1,0 +1,58 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <title>Редактировать</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <style>
+        .container {
+            width: 50%;
+            border: 1px solid #000000; padding: 8px; margin: 3px auto;
+            color:#000000; line-height:1.5; font-family:serif;
+        }
+    </style>
+</head>
+<body>
+
+<form th:action="@{/expert/editpiecehandler}"
+      method="post"
+      class="form-group">
+
+    <input type="hidden"
+           name="PlayId"
+           th:value="${thisPlay.getPlay_id()}">
+
+    <input name="Name"
+           placeholder="Введите название"
+           class="form-control"
+           th:id="name"
+           th:value="${thisPlay.getName()}"/>
+
+    <input name="Annotation"
+           placeholder="Введите название"
+           class="form-control"
+           th:id="name"
+           th:value="${thisPlay.getName()}"/>
+
+    <div th:each="man : ${AllMan}" class="container">
+        <input type="checkbox"
+               name="answerList"
+               th:value="${man.getMan_id()}"
+               th:id="'checkbox_' + ${man.getMan_id()}">
+        <input type="hidden"
+               name="manId"
+               th:value="${man.getMan_id()}">
+        [[${man.getName()}]]<br>
+        [[${man.getDescription()}]]<br>
+    </div>
+
+    <button type="submit"
+            th:id="submit_it"
+            class="btn btn-primary">
+        звершить
+    </button>
+</form>
+
+</body>
+</html>

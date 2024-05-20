@@ -8,6 +8,8 @@
 </head>
 <body>
 
+<a href="/index">На главную</a><br>
+
 Выберите холл, в котором пройдет представление
 <div th:each="hall : ${AllHalls}">
     <a th:href="'/contentmaker/addperformance?Hall=' + ${hall.getHall_id()}">

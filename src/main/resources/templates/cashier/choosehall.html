@@ -1,0 +1,53 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <title>Представление</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <style>
+        .container {
+            width: 50%;
+            border: 1px solid #000000; padding: 8px; margin: 3px auto;
+            color:#000000; line-height:1.5; font-family:serif;
+        }
+    </style>
+</head>
+<body>
+
+<a href="/index">На главную</a><br>
+
+<div th:if="${deleted != null}">
+    <h3 th:if="${deleted}"
+        th:id="answer_1">
+        билеты забронированы успешно
+    </h3>
+    <h3 th:if="${!deleted}"
+        th:id="answer_2">
+        Ошибка, билеты не были забронированы. Попробуйте выбрать другие места
+    </h3>
+</div>
+
+Выберите представление, на которое требуется забронировать билеты
+
+<div class="container"
+     th:each="perf : ${allPerformances}"
+     th:id="'container_' + ${perf.getPerformance_id()}">
+
+    [[${perf.getTheater_name()}]]<br>
+    [[${perf.getPlay_name()}]]<br>
+    Начало [[${perf.getStart_time()}]]<br>
+    Конец [[${perf.getEnd_time()}]]<br>
+    Свободных мест:
+    <div th_id="'perf_' + ${perf.getPerformance_id()}">
+        [[${freeSeatsDao.findByPerformance(perf.getPerformance_id()).size()}]]
+    </div>
+    <a th:href="'/cashier/tickets?PerformanceID=' + ${perf.getPerformance_id()}"
+       th:id="'perf_' + ${perf.getPerformance_id()}">
+        Забронировать
+    </a><br>
+
+</div>
+
+</body>
+</html>

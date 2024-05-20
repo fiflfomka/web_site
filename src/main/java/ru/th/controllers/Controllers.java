@@ -2,7 +2,6 @@ package ru.th.controllers;
 
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import ru.th.DAO.*;
@@ -16,12 +15,20 @@ import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
+import static java.lang.String.copyValueOf;
+
 @Controller
 public class Controllers {
     @GetMapping(value = {"/", "/index"})
     public String index(Model model) {
         PerformanceDAO dao = new PerformanceDAO();
         model.addAttribute("allPerformances", dao.getAll());
+        FreeSeatsDAO fdao = new FreeSeatsDAO();
+        model.addAttribute("freeSeatsDao", fdao);
+        ActorDAO adao = new ActorDAO();
+        model.addAttribute("actorDao", adao);
+        ManDAO mdao = new ManDAO();
+        model.addAttribute("manDao", mdao);
         return "index";
     }
 
@@ -61,11 +68,85 @@ public class Controllers {
     }
 
     @GetMapping(value = {"/find_string"})
-    public String find_string(
+    public String find_by_string(
             @RequestParam("SubString") String s,
             Model model) {
         PerformanceDAO dao = new PerformanceDAO();
         model.addAttribute("allPerformances", dao.getByText(s));
+        FreeSeatsDAO fdao = new FreeSeatsDAO();
+        model.addAttribute("freeSeatsDao", fdao);
+        ActorDAO adao = new ActorDAO();
+        model.addAttribute("actorDao", adao);
+        ManDAO mdao = new ManDAO();
+        model.addAttribute("manDao", mdao);
+        return "index";
+    }
+
+    @GetMapping(value = {"/find_parameter"})
+    public String find_by_parameter(
+            @RequestParam("Enum") String enm,
+            @RequestParam("Start") String start,
+            @RequestParam("End") String end,
+            Model model) {
+
+        PerformanceDAO dao = new PerformanceDAO();
+
+        Timestamp start_time = null;
+        if (!Objects.equals(start, "")) {
+            try {
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+                Date parsedDate = dateFormat.parse(start);
+                start_time = new Timestamp(parsedDate.getTime());
+            } catch (Exception e) {
+                model.addAttribute("TIMEC", true);
+                model.addAttribute("allPerformances", dao.getAll());
+                FreeSeatsDAO fdao = new FreeSeatsDAO();
+                model.addAttribute("freeSeatsDao", fdao);
+                ActorDAO adao = new ActorDAO();
+                model.addAttribute("actorDao", adao);
+                ManDAO mdao = new ManDAO();
+                model.addAttribute("manDao", mdao);
+                return "index";
+            }
+        }
+
+        Timestamp end_time = null;
+        if (!Objects.equals(end, "")) {
+            try {
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+                Date parsedDate = dateFormat.parse(end);
+                end_time = new Timestamp(parsedDate.getTime());
+            } catch (Exception e) {
+                model.addAttribute("TIMEC", true);
+                model.addAttribute("allPerformances", dao.getAll());
+                FreeSeatsDAO fdao = new FreeSeatsDAO();
+                model.addAttribute("freeSeatsDao", fdao);
+                ActorDAO adao = new ActorDAO();
+                model.addAttribute("actorDao", adao);
+                ManDAO mdao = new ManDAO();
+                model.addAttribute("manDao", mdao);
+                return "index";
+            }
+        }
+
+        EnumPlayGenre e = null;
+        if (!Objects.equals(enm, "no")) {
+            if (Objects.equals(enm, "tragedy")) {
+                e = EnumPlayGenre.tragedy;
+            } else if (Objects.equals(enm, "comedy")) {
+                e = EnumPlayGenre.comedy;
+            } else {
+                e = EnumPlayGenre.drama;
+            }
+        }
+
+        model.addAttribute("allPerformances", dao.getWithParameters(e, start_time, end_time));
+        FreeSeatsDAO fdao = new FreeSeatsDAO();
+        model.addAttribute("freeSeatsDao", fdao);
+        ActorDAO adao = new ActorDAO();
+        model.addAttribute("actorDao", adao);
+        ManDAO mdao = new ManDAO();
+        model.addAttribute("manDao", mdao);
         return "index";
     }
 
@@ -92,6 +173,52 @@ public class Controllers {
         model.addAttribute("PerformanceID", pid);
         model.addAttribute("Success", dao.deleteById(fpk));
         return "success";
+    }
+
+
+
+
+
+
+    // cashier part
+
+    @GetMapping(value = {"cashier/", "/cashier/choosehall"})
+    public String choosehall_cashier(Model model) {
+        PerformanceDAO dao = new PerformanceDAO();
+        model.addAttribute("allPerformances", dao.getAll());
+        FreeSeatsDAO fdao = new FreeSeatsDAO();
+        model.addAttribute("freeSeatsDao", fdao);
+        return "cashier/choosehall";
+    }
+
+    @GetMapping(value = {"/cashier/tickets"})
+    public String choosehall_cashier(
+            @RequestParam("PerformanceID") Integer pid,
+            Model model) {
+        FreeSeatsDAO dao = new FreeSeatsDAO();
+        model.addAttribute("AllSeats", dao.findByPerformance(pid));
+        model.addAttribute("PerformanceID", pid);
+        return "cashier/tickets";
+    }
+
+    @PostMapping(value = {"/cashier/tickets_handle"})
+    public String tickets_handle (
+            @RequestParam("answerList") Integer[] PlaceList,
+            @RequestParam("PerformanceID") Integer perf_id,
+            Model model) {
+        List<FreeSeatsPK> lst = new ArrayList<>();
+        for (Integer i : PlaceList) {
+            FreeSeatsPK p = new FreeSeatsPK();
+            p.setPerformance_id(perf_id);
+            p.setSeat_id(i);
+            lst.add(p);
+        }
+        FreeSeatsDAO dao = new FreeSeatsDAO();
+        model.addAttribute("deleted", dao.deleteMass(lst));
+        PerformanceDAO pdao = new PerformanceDAO();
+        model.addAttribute("allPerformances", pdao.getAll());
+        model.addAttribute("freeSeatsDao", dao);
+        return "/cashier/choosehall";
     }
 
 
@@ -163,7 +290,11 @@ public class Controllers {
         p.setPlaces_price_array(a);
 
         PerformanceDAO dao = new PerformanceDAO();
-        dao.save(p);
+        if ( !dao.save(p) ) {
+            model.addAttribute("OK", false);
+            model.addAttribute("TIMEC", true);
+            return "contentmaker/success";
+        }
 
         model.addAttribute("OK", true);
         return "contentmaker/success";
@@ -288,4 +419,98 @@ public class Controllers {
         dao.save(lst);
         return "/expert/success2";
     }
+
+    @GetMapping(value = {"/expert/addactor"})
+    public String actors_start_page (Model model) {
+        ManDAO dao = new ManDAO();
+        model.addAttribute("AllMan", dao.getAll());
+        return "/expert/addactor";
+    }
+
+    @GetMapping(value = {"/expert/addnew"})
+    public String addnew (Model model) {
+        return "/expert/addnew";
+    }
+
+    @GetMapping(value = {"/expert/delete"})
+    public String del_man (
+            @RequestParam("ManId") Integer man,
+            Model model) {
+        ManDAO dao = new ManDAO();
+        String name = dao.findById(man).getName();
+        dao.deleteById(man);
+        model.addAttribute("Name", name);
+        model.addAttribute("Del", true);
+        ManDAO mdao = new ManDAO();
+        model.addAttribute("AllMan", mdao.getAll());
+        return "/expert/addactor";
+    }
+
+    @GetMapping(value = {"/expert/edit"})
+    public String edit_man (
+            @RequestParam("ManId") Integer man_id,
+            Model model) {
+        ManDAO dao = new ManDAO();
+        Man man = dao.findById(man_id);
+        model.addAttribute("man", man);
+        return "/expert/edit_man";
+    }
+
+    @PostMapping(value = {"/expert/edit_man_handler"})
+    public String edit_man_handler (
+            @RequestParam("Id") Integer man_id,
+            @RequestParam("Name") String name,
+            @RequestParam("Description") String description,
+            Model model) {
+        ManDAO dao = new ManDAO();
+        Man man = dao.findById(man_id);
+
+        if (!Objects.equals(name, "")) {
+            man.setName(name);
+        }
+        man.setDescription(description);
+
+        dao.saveOrUpdate(man);
+        model.addAttribute("Name", man.getName());
+        model.addAttribute("Edit", true);
+        model.addAttribute("AllMan", dao.getAll());
+        return "/expert/addactor";
+    }
+
+    @PostMapping(value = {"/expert/add_man_handler"})
+    public String add_man_handler (
+            @RequestParam("Name") String name,
+            @RequestParam("Description") String description,
+            Model model) {
+        ManDAO dao = new ManDAO();
+
+        if (Objects.equals(name, "")) {
+            model.addAttribute("Name", "");
+            model.addAttribute("AddFailed", true);
+            model.addAttribute("AllMan", dao.getAll());
+        }
+
+        Man man = new Man();
+        man.setDescription(description);
+        man.setName(name);
+        dao.saveOrUpdate(man);
+
+        model.addAttribute("Name", man.getName());
+        model.addAttribute("Add", true);
+        ManDAO mdao = new ManDAO();
+        model.addAttribute("AllMan", mdao.getAll());
+        return "/expert/addactor";
+    }
+
+    @GetMapping(value = {"/expert/piecelist"})
+    public String choosetoedit(Model model) {
+        PlayDAO dao = new PlayDAO();
+        model.addAttribute("AllPlay", dao.getAll());
+        ActorDAO adao = new ActorDAO();
+        model.addAttribute("actorDao", adao);
+        ManDAO mdao = new ManDAO();
+        model.addAttribute("manDao", mdao);
+        return "/expert/piecelist";
+    }
+
 }

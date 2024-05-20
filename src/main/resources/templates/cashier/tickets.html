@@ -1,0 +1,43 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <title>Билеты</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+
+<a href="/cashier/">назад</a><br>
+
+Выберите бронируемые билеты
+
+<form th:action="@{/cashier/tickets_handle}"
+      method="post"
+      class="form-group">
+
+    <input type="hidden"
+           name="PerformanceID"
+           th:value="${PerformanceID}">
+
+    <div th:each="seat : ${AllSeats}" class="container">
+        <input type="checkbox"
+               name="answerList"
+               th:value="${seat.getSeat_id}"
+               th:id="'checkbox_' + ${seat.getSeat_id()}">
+
+        ряд [[${seat.getSeat_raw()}]],&emsp;
+        место [[${seat.getSeat_place()}]],&emsp;
+        [[${seat.getSeat_type()}]],&emsp;
+        [[${seat.getPrice()}]] р,&emsp;
+    </div>
+
+    <button type="submit"
+            th:id="submit_it"
+            class="btn btn-primary">
+        Забронировать
+    </button>
+</form>
+
+</body>
+</html>
